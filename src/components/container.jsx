@@ -1,8 +1,12 @@
 import React, { useRef, useState, useEffect } from "react";
 import QRCodeStyling from "qr-code-styling";
+import ColorSelector from "react-color-selector";
+import DropdownToggle from "./dropdown";
 
 const qrCode = new QRCodeStyling({
   image: null,
+  height: 200,
+  width: 200,
   dotsOptions: {
     color: "#090909",
     type: "rounded",
@@ -14,7 +18,7 @@ const qrCode = new QRCodeStyling({
 });
 const Label = ({ isActive, style }) => {
   if (isActive === 0) {
-    return <h1 className={style}>Enter URL:</h1>;
+    return <h1 className={style}>Enter URL/Link:</h1>;
   } else if (isActive === 8) {
     return <h1 className={style}>Enter Phone Number:</h1>;
   } else {
@@ -23,9 +27,20 @@ const Label = ({ isActive, style }) => {
   return null;
 };
 const Container = () => {
-  const [url, setUrl] = useState("https://github.com/MarkCyrus29");
+  const [url, setUrl] = useState("https://github.com/MarkCyrus29/QRMaker");
   const ref = useRef(null);
   const [isActive, setIsActive] = useState(0);
+  const [color, setColor] = useState("#000000");
+  const picker_data = {
+    col: 12,
+    row: 12,
+    width: 300,
+    height: 250,
+    view: "both",
+    theme: "dark",
+    title: "COLORS",
+    cellControl: 4,
+  };
 
   useEffect(() => {
     qrCode.append(ref.current);
@@ -42,13 +57,13 @@ const Container = () => {
     setUrl(event.target.value);
   };
   const socialMedia = [
-    { title: "URL", url: "https://github.com/MarkCyrus29" },
+    { title: "URL", url: "" },
     { title: "Facebook", url: "https://www.facebook.com/" },
     { title: "Instagram", url: "https://www.instagram.com/" },
     { title: "Twitter/X", url: "https://twitter.com/" },
     { title: "LinkedIn", url: "https://www.linkedin.com/in/" },
     { title: "TikTok", url: "https://www.tiktok.com/@" },
-    { title: "YouTube", url: "https://www.youtube.com/c/" },
+    { title: "YouTube", url: "https://www.youtube.com/" },
     { title: "Snapchat", url: "https://www.snapchat.com/add/" },
     { title: "WhatsApp", url: "https://wa.me/" },
     { title: "Telegram", url: "https://t.me/" },
@@ -56,9 +71,9 @@ const Container = () => {
 
   return (
     <>
-      <div className="h-full flex flex-col justify-center items-center mt-5">
-        <div className="flex justify-between w-5/6 h-5/6 border border-gray-600 rounded-3xl">
-          <div className="w-2/3 h-full flex flex-col">
+      <div className="h-full flex flex-col justify-center items-center mt-10  ">
+        <div className="flex justify-between w-5/6 h-5/6 rounded-3xl bg-white shadow-[0_5px_20px_rgba(10,10,10,0.3)]">
+          <div className="w-2/3 h-full flex flex-col p-5">
             <div className="grid grid-cols-5">
               {socialMedia.map(({ title, url }, index) => {
                 return (
@@ -81,17 +96,34 @@ const Container = () => {
             <div className=" w-full h-full">
               <textarea
                 className=" p-5 pt-0 focus:outline-0 w-full h-full resize-none"
+                placeholder="..."
                 value={url}
                 onChange={onUrlChange}
               />
             </div>
           </div>
-          <div className="w-1/3 border-l border-l-gray-600 flex flex-col items-center justify-center">
-            <p className="font-bold">QR CODE</p>
+          <div className="w-1/3 my-10  border-l-2 border-l-[#C2CED2] flex flex-col items-center ">
+            <p className="font-bold text-3xl mt-5 mb-1">QR CODE</p>
             <div
-              className="m-2 mt-0 flex justify-center h-[310px] w-[310px] border"
+              className="m-2 mt-0 flex justify-center p-2  h-[210px] w-[210px]"
               ref={ref}
             ></div>
+            <div className="flex flex-col w-full mx-2">
+              <button className="btn  peer">
+                <p>FRAME</p>
+                {<DropdownToggle />}
+              </button>
+              <button className="btn  peer">
+                <p>SHAPE & COLOR</p>
+                {<DropdownToggle />}
+              </button>
+              <button className="btn  peer">
+                <p>LOGO</p>
+                {<DropdownToggle />}
+              </button>
+            </div>
+            {/* <ColorSelector pallet={picker_data} selectedColor={setColor} />
+            <p>{color}</p> */}
           </div>
         </div>
       </div>

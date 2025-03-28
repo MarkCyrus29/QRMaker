@@ -1,4 +1,13 @@
 @import "tailwindcss";
+body {
+  background-color: #f4f7ff;
+}
 * {
   font-family: "Fira Code", "Source Code Pro", "Courier New", monospace;
+}
+
+@layer components {
+  .btn {
+    @apply border-y text-start pl-5 font-semibold border-y-gray-400 py-1.5 transition-all hover:bg-gray-100 active:bg-gray-200 cursor-pointer flex flex-row justify-between items-center;
+  }
 }
