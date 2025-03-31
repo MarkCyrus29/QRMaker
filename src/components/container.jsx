@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
 import QRCodeStyling from "qr-code-styling";
 import ColorSelector from "react-color-selector";
-import DropdownToggle from "./dropdown";
+import Accordion from "./accordion";
+import Button from "@mui/material/Button";
 
 const qrCode = new QRCodeStyling({
   image: null,
@@ -69,37 +70,59 @@ const Container = () => {
     { title: "Telegram", url: "https://t.me/" },
   ];
 
+  const handleClick = (btn) => {
+    const panel = document.getElementsByClassName("panel");
+    console.log(panel[btn]);
+  };
+
   return (
     <>
-      <div className="h-full flex flex-col justify-center items-center mt-10  ">
+      <div className="h-full flex flex-col justify-center items-center mt-10">
         <div className="flex justify-between w-5/6 h-5/6 rounded-3xl bg-white shadow-[0_5px_20px_rgba(10,10,10,0.3)]">
-          <div className="w-2/3 h-full flex flex-col p-5">
-            <div className="grid grid-cols-5">
-              {socialMedia.map(({ title, url }, index) => {
-                return (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      setIsActive(index);
-                      setUrl(url);
-                    }}
-                    className={`m-2 pt-2 rounded-t-xl border-b p-1 border-b-gray-400 cursor-pointer transition-all hover:bg-gray-100 active:bg-gray-200 ${
-                      isActive === index ? `bg-gray-200` : ""
-                    }`}
-                  >
-                    {title}
-                  </button>
-                );
-              })}
-            </div>
-            <Label isActive={isActive} style={"font-bold m-5 mb-2"} />
-            <div className=" w-full h-full">
-              <textarea
-                className=" p-5 pt-0 focus:outline-0 w-full h-full resize-none"
-                placeholder="..."
-                value={url}
-                onChange={onUrlChange}
-              />
+          <div className="w-2/3 h-full p-5 ">
+            <div className="w-full h-full flex flex-col border border-[#9CA3AF] rounded-t-2xl">
+              <div className="grid grid-cols-5">
+                {socialMedia.map(({ title, url }, index) => {
+                  return (
+                    <Button
+                      key={index}
+                      onClick={() => {
+                        setIsActive(index);
+                        setUrl(url);
+                      }}
+                      sx={{
+                        pt: "8px",
+                        borderBottom: "1px solid #9CA3AF",
+                        borderRadius: "16px 16px 0px 0px",
+                        cursor: "pointer",
+                        transition: "all 0.2s",
+                        backgroundColor:
+                          isActive === index ? "#E5E7EB" : "transparent",
+                        color: isActive ? "#1E2952" : "#6B7280",
+                        "&:hover": {
+                          backgroundColor: "#F3F4F6",
+                          color: "#374151",
+                        },
+                        "&:active": {
+                          backgroundColor: "#E5E7EB",
+                          color: "#111827",
+                        },
+                      }}
+                    >
+                      {title}
+                    </Button>
+                  );
+                })}
+              </div>
+              <Label isActive={isActive} style={"font-bold m-5 mb-2"} />
+              <div className=" w-full h-full">
+                <textarea
+                  className=" p-5 pt-0 focus:outline-0 w-full h-full resize-none"
+                  placeholder="..."
+                  value={url}
+                  onChange={onUrlChange}
+                />
+              </div>
             </div>
           </div>
           <div className="w-1/3 my-10  border-l-2 border-l-[#C2CED2] flex flex-col items-center ">
@@ -109,21 +132,20 @@ const Container = () => {
               ref={ref}
             ></div>
             <div className="flex flex-col w-full mx-2">
-              <button className="btn  peer">
-                <p>FRAME</p>
-                {<DropdownToggle />}
-              </button>
-              <button className="btn  peer">
-                <p>SHAPE & COLOR</p>
-                {<DropdownToggle />}
-              </button>
-              <button className="btn  peer">
-                <p>LOGO</p>
-                {<DropdownToggle />}
-              </button>
+              <Accordion title={"FRAME"} handleClick={() => handleClick(0)} />
+              <div className="panel hidden ">FRAME PANEL</div>
+              <Accordion
+                title={"SHAPE & COLOR"}
+                handleClick={() => handleClick(1)}
+              />
+              <div className="panel hidden">SHAPES PANEL</div>
+              <Accordion title={"LOGO"} handleClick={() => handleClick(2)} />
+              <div className="panel hidden">
+                LOGO PANEL{" "}
+                <ColorSelector pallet={picker_data} selectedColor={setColor} />
+                <p>{color}</p>
+              </div>
             </div>
-            {/* <ColorSelector pallet={picker_data} selectedColor={setColor} />
-            <p>{color}</p> */}
           </div>
         </div>
       </div>
