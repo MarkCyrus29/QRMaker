@@ -4,20 +4,6 @@ import ColorSelector from "react-color-selector";
 import Accordion from "./accordion";
 import Button from "@mui/material/Button";
 
-const [customColor, setCustomColor] = useState("#000000");
-const qrCode = new QRCodeStyling({
-  image: null,
-  height: 200,
-  width: 200,
-  dotsOptions: {
-    color: customColor,
-    type: "rounded",
-  },
-  imageOptions: {
-    crossOrigin: "anonymous",
-    margin: 20,
-  },
-});
 const Label = ({ isActive, style }) => {
   if (isActive === 0) {
     return <h1 className={style}>Enter URL/Link:</h1>;
@@ -32,7 +18,21 @@ const Container = () => {
   const [url, setUrl] = useState("");
   const ref = useRef(null);
   const [isActive, setIsActive] = useState(0);
-  
+  const [customColor, setCustomColor] = useState("#000000");
+
+  const qrCode = new QRCodeStyling({
+    image: null,
+    height: 200,
+    width: 200,
+    dotsOptions: {
+      color: customColor,
+      type: "rounded",
+    },
+    imageOptions: {
+      crossOrigin: "anonymous",
+      margin: 20,
+    },
+  });
   const picker_data = {
     col: 12,
     row: 12,
@@ -146,7 +146,10 @@ const Container = () => {
               <Accordion title={"LOGO"} handleClick={() => handleClick(2)} />
               <div className="panel hidden">
                 LOGO PANEL{" "}
-                <ColorSelector pallet={picker_data} selectedColor={setCustomColor} />
+                <ColorSelector
+                  pallet={picker_data}
+                  selectedColor={setCustomColor}
+                />
                 <p>{customColor}</p>
               </div>
             </div>
