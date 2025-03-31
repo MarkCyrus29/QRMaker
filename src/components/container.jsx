@@ -4,12 +4,13 @@ import ColorSelector from "react-color-selector";
 import Accordion from "./accordion";
 import Button from "@mui/material/Button";
 
+const [customColor, setCustomColor] = useState("#000000");
 const qrCode = new QRCodeStyling({
   image: null,
   height: 200,
   width: 200,
   dotsOptions: {
-    color: "#090909",
+    color: customColor,
     type: "rounded",
   },
   imageOptions: {
@@ -28,10 +29,10 @@ const Label = ({ isActive, style }) => {
   return null;
 };
 const Container = () => {
-  const [url, setUrl] = useState("https://github.com/MarkCyrus29/QRMaker");
+  const [url, setUrl] = useState("");
   const ref = useRef(null);
   const [isActive, setIsActive] = useState(0);
-  const [color, setColor] = useState("#000000");
+  
   const picker_data = {
     col: 12,
     row: 12,
@@ -114,11 +115,14 @@ const Container = () => {
                   );
                 })}
               </div>
-              <Label isActive={isActive} style={"font-bold m-5 mb-2"} />
+              <Label
+                isActive={isActive}
+                style={"font-bold mt-10 ml-5 mb-2 text-xl"}
+              />
               <div className=" w-full h-full">
                 <textarea
-                  className=" p-5 pt-0 focus:outline-0 w-full h-full resize-none"
-                  placeholder="..."
+                  className=" pl-5 pt-0 focus:outline-0 w-full h-full resize-none placeholder:font-bold placeholder:text-lg"
+                  placeholder={`Enter a URL/Link here\n(Your QR Code will be generated automatically)`}
                   value={url}
                   onChange={onUrlChange}
                 />
@@ -142,8 +146,8 @@ const Container = () => {
               <Accordion title={"LOGO"} handleClick={() => handleClick(2)} />
               <div className="panel hidden">
                 LOGO PANEL{" "}
-                <ColorSelector pallet={picker_data} selectedColor={setColor} />
-                <p>{color}</p>
+                <ColorSelector pallet={picker_data} selectedColor={setCustomColor} />
+                <p>{customColor}</p>
               </div>
             </div>
           </div>
