@@ -1,8 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
 import QRCodeStyling from "qr-code-styling";
 import ColorSelector from "react-color-selector";
-import Accordion from "./accordion";
+import Accordion from "./components/accordion";
 import Button from "@mui/material/Button";
+import SkeletonImage from "./assets/skeleton_image.png";
 
 const Label = ({ isActive, style }) => {
   if (isActive === 0) {
@@ -14,45 +15,59 @@ const Label = ({ isActive, style }) => {
   }
   return null;
 };
+
 const Container = () => {
   const [url, setUrl] = useState("");
   const ref = useRef(null);
   const [isActive, setIsActive] = useState(0);
   const [customColor, setCustomColor] = useState("#000000");
+  const [isOpen, setIsOpen] = useState(0);
+  const [height, setHeight] = useState("0px");
 
-  const qrCode = new QRCodeStyling({
-    image: null,
-    height: 200,
-    width: 200,
-    dotsOptions: {
-      color: customColor,
-      type: "rounded",
-    },
-    imageOptions: {
-      crossOrigin: "anonymous",
-      margin: 20,
-    },
-  });
+  const qrCode = useRef(
+    new QRCodeStyling({
+      image: null,
+      height: 200,
+      width: 200,
+      dotsOptions: {
+        color: customColor,
+        type: "rounded",
+      },
+      imageOptions: {
+        crossOrigin: "anonymous",
+        margin: 20,
+      },
+    })
+  );
+
   const picker_data = {
     col: 12,
     row: 12,
-    width: 300,
-    height: 250,
+    width: 250,
+    height: 200,
     view: "both",
-    theme: "dark",
+    theme: "light",
     title: "COLORS",
-    cellControl: 4,
   };
 
   useEffect(() => {
-    qrCode.append(ref.current);
-  }, []);
-
-  useEffect(() => {
-    qrCode.update({
-      data: url,
-    });
-  }, [url]);
+    if (qrCode.current && ref.current) {
+      if (url) {
+        qrCode.current.update({
+          dotsOptions: { color: customColor },
+          data: url,
+        });
+        qrCode.current.append(ref.current);
+        ref.current.style.backgroundImage = "none";
+      } else {
+        ref.current.innerHTML = "";
+        ref.current.style.backgroundImage = `url(${SkeletonImage})`;
+        ref.current.style.backgroundSize = "contain";
+        ref.current.style.backgroundPosition = "center";
+        ref.current.style.backgroundRepeat = "no-repeat";
+      }
+    }
+  }, [url, customColor]);
 
   const onUrlChange = (event) => {
     event.preventDefault();
@@ -72,8 +87,12 @@ const Container = () => {
   ];
 
   const handleClick = (btn) => {
-    const panel = document.getElementsByClassName("panel");
-    console.log(panel[btn]);
+    setIsOpen(btn);
+  };
+  const handleDownload = () => {
+    qrCode.current.download({
+      extension: "png",
+    });
   };
 
   return (
@@ -94,7 +113,7 @@ const Container = () => {
                       sx={{
                         pt: "8px",
                         borderBottom: "1px solid #9CA3AF",
-                        borderRadius: "16px 16px 0px 0px",
+                        borderRadius: "15px 15px 0px 0px",
                         cursor: "pointer",
                         transition: "all 0.2s",
                         backgroundColor:
@@ -121,7 +140,7 @@ const Container = () => {
               />
               <div className=" w-full h-full">
                 <textarea
-                  className=" pl-5 pt-0 focus:outline-0 w-full h-full resize-none placeholder:font-bold placeholder:text-lg"
+                  className=" pl-5 pt-0 focus:outline-0 w-full h-full resize-none placeholder:font-bold placeholder:text-lg placeholder:text-[#909090]"
                   placeholder={`Enter a URL/Link here\n(Your QR Code will be generated automatically)`}
                   value={url}
                   onChange={onUrlChange}
@@ -131,27 +150,51 @@ const Container = () => {
           </div>
           <div className="w-1/3 my-10  border-l-2 border-l-[#C2CED2] flex flex-col items-center ">
             <p className="font-bold text-3xl mt-5 mb-1">QR CODE</p>
+
             <div
-              className="m-2 mt-0 flex justify-center p-2  h-[210px] w-[210px]"
+              className="relative mx-2 flex justify-center p-2 h-[210px] w-[210px] "
               ref={ref}
             ></div>
+
+            <button
+              class="relative w-[150px] h-[40px] mb-2 cursor-pointer flex items-center border border-[#9CA3AF]  overflow-hidden transition-all duration-300 group"
+              onClick={handleDownload}
+            >
+              <span class="translate-x-[22px] text-[#374151] font-semibold transition-all duration-300 group-hover:text-transparent">
+                Download
+              </span>
+              <span class="absolute translate-x-[109px] h-full w-[40px] bg-[#f4f7ff] flex items-center justify-center transition-all duration-300 group-hover:w-full group-hover:translate-x-0">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 35 35"
+                  class="w-[20px] fill-[#374151]"
+                >
+                  <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
+                  <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
+                  <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
+                </svg>
+              </span>
+            </button>
+
             <div className="flex flex-col w-full mx-2">
               <Accordion title={"FRAME"} handleClick={() => handleClick(0)} />
-              <div className="panel hidden ">FRAME PANEL</div>
+
+              <div style={{ maxHeight: height, opacity: 0 }}>FRAME PANEL</div>
               <Accordion
                 title={"SHAPE & COLOR"}
                 handleClick={() => handleClick(1)}
               />
-              <div className="panel hidden">SHAPES PANEL</div>
-              <Accordion title={"LOGO"} handleClick={() => handleClick(2)} />
-              <div className="panel hidden">
-                LOGO PANEL{" "}
+              <div style={{ maxHeight: height, opacity: 0 }}>
                 <ColorSelector
                   pallet={picker_data}
                   selectedColor={setCustomColor}
                 />
-                <p>{customColor}</p>
               </div>
+
+              <p style={{ maxHeight: height, opacity: 0 }}>{customColor}</p>
+              <div style={{ maxHeight: height, opacity: 0 }}>SHAPES PANEL</div>
+              <Accordion title={"LOGO"} handleClick={() => handleClick(2)} />
+              <div style={{ maxHeight: height, opacity: 0 }}>LOGO PANEL </div>
             </div>
           </div>
         </div>

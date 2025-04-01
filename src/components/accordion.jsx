@@ -3,7 +3,7 @@ import DropdownToggle from "./dropdownicon";
 
 const Accordion = ({ title, handleClick }) => {
   return (
-    <button className="btn" onClick={handleClick}>
+    <button className="btn " onClick={handleClick}>
       <p>{title}</p>
       {<DropdownToggle />}
     </button>

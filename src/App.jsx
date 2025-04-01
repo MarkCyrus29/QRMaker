@@ -1,4 +1,4 @@
-import Container from "./components/container";
+import Container from "./container";
 import Navbar from "./components/navbar";
 
 function App() {
