@@ -97,10 +97,10 @@ const Container = () => {
 
   return (
     <>
-      <div className="h-full flex flex-col justify-center items-center mt-10">
-        <div className="flex justify-between w-5/6 h-5/6 rounded-3xl bg-white shadow-[0_5px_20px_rgba(10,10,10,0.3)]">
-          <div className="w-2/3 h-full p-5 ">
-            <div className="w-full h-full flex flex-col border border-[#9CA3AF] rounded-t-2xl">
+      <div className="h-full flex flex-col  justify-center items-center mt-10">
+        <div className="flex lg:flex-row  justify-between w-5/6 h-5/6 rounded-3xl bg-white shadow-[0_5px_20px_rgba(10,10,10,0.3)]">
+          <div className="lg:w-2/3 h-full p-5 ">
+            <div className="w-full h-full flex flex-col  border border-[#9CA3AF] rounded-t-2xl">
               <div className="grid grid-cols-5">
                 {socialMedia.map(({ title, url }, index) => {
                   return (
@@ -148,22 +148,20 @@ const Container = () => {
               </div>
             </div>
           </div>
-          <div className="w-1/3 my-10  border-l-2 border-l-[#C2CED2] flex flex-col items-center ">
+          <div className="w-1/3 my-10  border-l-2 border-l-[#C2CED2] flex flex-col  items-center ">
             <p className="font-bold text-3xl mt-5 mb-1">QR CODE</p>
-
             <div
-              className="relative mx-2 flex justify-center p-2 h-[210px] w-[210px] "
+              className="relative mx-2 mb-2 flex justify-center p-2 min-h-[210px] w-[210px] "
               ref={ref}
             ></div>
-
             <button
-              class="relative w-[150px] h-[40px] mb-2 cursor-pointer flex items-center border border-[#9CA3AF]  overflow-hidden transition-all duration-300 group"
+              class="relative min-w-[150px] min-h-[40px] mb-2 cursor-pointer flex items-center border border-[#9CA3AF]  overflow-hidden transition-all duration-300 group "
               onClick={handleDownload}
             >
-              <span class="translate-x-[22px] text-[#374151] font-semibold transition-all duration-300 group-hover:text-transparent">
+              <span class="translate-x-[22px] text-[#374151] font-semibold transition-all duration-300 group-hover:text-transparent ">
                 Download
               </span>
-              <span class="absolute translate-x-[109px] h-full w-[40px] bg-[#f4f7ff] flex items-center justify-center transition-all duration-300 group-hover:w-full group-hover:translate-x-0">
+              <span class="absolute translate-x-[109px] h-full w-[40px] bg-[#d7e2ff] flex items-center justify-center transition-all duration-300 group-hover:w-full group-hover:translate-x-0 group-active:bg-[#e2e2ff] ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 35 35"
@@ -176,25 +174,28 @@ const Container = () => {
               </span>
             </button>
 
-            <div className="flex flex-col w-full mx-2">
-              <Accordion title={"FRAME"} handleClick={() => handleClick(0)} />
-
-              <div style={{ maxHeight: height, opacity: 0 }}>FRAME PANEL</div>
-              <Accordion
-                title={"SHAPE & COLOR"}
-                handleClick={() => handleClick(1)}
-              />
-              <div style={{ maxHeight: height, opacity: 0 }}>
-                <ColorSelector
-                  pallet={picker_data}
-                  selectedColor={setCustomColor}
-                />
+            <div className="flex flex-col w-full h-full mx-2">
+              <div className="accordion-container">
+                <Accordion title={"FRAME"} handleClick={() => handleClick(0)} />
+                <div className="panel">FRAME PANEL</div>
               </div>
-
-              <p style={{ maxHeight: height, opacity: 0 }}>{customColor}</p>
-              <div style={{ maxHeight: height, opacity: 0 }}>SHAPES PANEL</div>
-              <Accordion title={"LOGO"} handleClick={() => handleClick(2)} />
-              <div style={{ maxHeight: height, opacity: 0 }}>LOGO PANEL </div>
+              <div className="accordion-container">
+                <Accordion
+                  title={"SHAPE & COLOR"}
+                  handleClick={() => handleClick(1)}
+                />
+                <div className="panel">
+                  <ColorSelector
+                    pallet={picker_data}
+                    selectedColor={setCustomColor}
+                  />
+                  <p>{customColor}</p>
+                </div>
+              </div>
+              <div className="accordion-container">
+                <Accordion title={"LOGO"} handleClick={() => handleClick(2)} />
+                <div className="panel">LOGO PANEL </div>
+              </div>
             </div>
           </div>
         </div>
