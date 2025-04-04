@@ -1,5 +1,6 @@
 import Container from "./container";
 import Navbar from "./components/navbar";
+import { Footer } from "./components/footer";
 
 function App() {
   return (
@@ -10,7 +11,7 @@ function App() {
           <Container />
         </div>
       </div>
-      <footer className="h-[100px] w-full bg-[#090909]">Hello</footer>
+      <Footer />
     </>
   );
 }

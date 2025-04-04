@@ -1,9 +1,21 @@
 import React, { useRef, useState, useEffect } from "react";
 import QRCodeStyling from "qr-code-styling";
-import ColorSelector from "react-color-selector";
 import Accordion from "./components/accordion";
 import Button from "@mui/material/Button";
 import SkeletonImage from "./assets/skeleton_image.png";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import LinkIcon from "@mui/icons-material/Link";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import XIcon from "@mui/icons-material/X";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import TikTokIcon from "./assets/TikTokIcon.png";
+import SnapchatIcon from "./assets/SnapchatIcon.png";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import TelegramIcon from "@mui/icons-material/Telegram";
+import SelectOptions from "./components/select";
+import TextField from "@mui/material/TextField";
+import ColorSelectorModal from "./components/colorSelector";
 
 const Label = ({ isActive, style }) => {
   if (isActive === 0) {
@@ -16,45 +28,76 @@ const Label = ({ isActive, style }) => {
   return null;
 };
 
+const socialMedia = [
+  { title: "URL", url: "", icon: LinkIcon },
+  { title: "Facebook", url: "https://www.facebook.com/", icon: FacebookIcon },
+  {
+    title: "Instagram",
+    url: "https://www.instagram.com/",
+    icon: InstagramIcon,
+  },
+  { title: "Twitter/X", url: "https://x.com/", icon: XIcon },
+  {
+    title: "LinkedIn",
+    url: "https://www.linkedin.com/in/",
+    icon: LinkedInIcon,
+  },
+  { title: "TikTok", url: "https://www.tiktok.com/@", icon: TikTokIcon },
+  { title: "YouTube", url: "https://www.youtube.com/", icon: YouTubeIcon },
+  {
+    title: "Snapchat",
+    url: "https://www.snapchat.com/add/",
+    icon: SnapchatIcon,
+  },
+  { title: "WhatsApp", url: "https://wa.me/", icon: WhatsAppIcon },
+  { title: "Telegram", url: "https://t.me/", icon: TelegramIcon },
+];
+
 const Container = () => {
   const [url, setUrl] = useState("");
   const ref = useRef(null);
   const [isActive, setIsActive] = useState(0);
-  const [customColor, setCustomColor] = useState("#000000");
-  const [isOpen, setIsOpen] = useState(0);
-  const [height, setHeight] = useState("0px");
+  const [customDotsColor, setCustomDotsColor] = useState("#000000");
+  const [customBgColor, setCustomBgColor] = useState("#FFFFFF");
+  const [Selected, setSelected] = useState(0);
+  const [dotsStyle, setDotsStyle] = useState("Rounded");
+  const [colorSelectorOpen, setColorSelectorOpen] = useState(0);
+  const [height, setHeight] = useState(199);
+  const [width, setWidth] = useState(199);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const qrCode = useRef(
     new QRCodeStyling({
-      image: null,
-      height: 200,
-      width: 200,
-      dotsOptions: {
-        color: customColor,
-        type: "rounded",
+      width: width,
+      height: height,
+      backgroundOptions: {
+        color: customBgColor,
       },
       imageOptions: {
         crossOrigin: "anonymous",
-        margin: 20,
+        margin: 5,
+      },
+      dotsOptions: {
+        color: customDotsColor,
+        type: dotsStyle,
       },
     })
   );
-
-  const picker_data = {
-    col: 12,
-    row: 12,
-    width: 250,
-    height: 200,
-    view: "both",
-    theme: "light",
-    title: "COLORS",
-  };
 
   useEffect(() => {
     if (qrCode.current && ref.current) {
       if (url) {
         qrCode.current.update({
-          dotsOptions: { color: customColor },
+          dotsOptions: {
+            color: customDotsColor,
+            type: dotsStyle.toLowerCase(),
+          },
+          backgroundOptions: {
+            color: customBgColor,
+          },
+
+          height: height,
+          width: width,
           data: url,
         });
         qrCode.current.append(ref.current);
@@ -67,42 +110,65 @@ const Container = () => {
         ref.current.style.backgroundRepeat = "no-repeat";
       }
     }
-  }, [url, customColor]);
+  }, [url, customDotsColor, customBgColor, dotsStyle, height, width]);
 
   const onUrlChange = (event) => {
     event.preventDefault();
     setUrl(event.target.value);
   };
-  const socialMedia = [
-    { title: "URL", url: "" },
-    { title: "Facebook", url: "https://www.facebook.com/" },
-    { title: "Instagram", url: "https://www.instagram.com/" },
-    { title: "Twitter/X", url: "https://twitter.com/" },
-    { title: "LinkedIn", url: "https://www.linkedin.com/in/" },
-    { title: "TikTok", url: "https://www.tiktok.com/@" },
-    { title: "YouTube", url: "https://www.youtube.com/" },
-    { title: "Snapchat", url: "https://www.snapchat.com/add/" },
-    { title: "WhatsApp", url: "https://wa.me/" },
-    { title: "Telegram", url: "https://t.me/" },
-  ];
 
   const handleClick = (btn) => {
-    setIsOpen(btn);
+    if (btn === Selected) {
+      setSelected(0);
+      setColorSelectorOpen(0);
+    } else {
+      setSelected(btn);
+    }
   };
   const handleDownload = () => {
     qrCode.current.download({
       extension: "png",
     });
   };
+  const handleSelect = (e) => {
+    setDotsStyle(e.target.value);
+  };
+  const handleHeight = (e) => {
+    let value = e.target.value;
+    if (value > 200) {
+      setErrorMsg("Max Value is reached.");
+      value = 200;
+    } else {
+      setErrorMsg("");
+    }
+    setHeight(value);
+  };
+  const handleWidth = (e) => {
+    let value = e.target.value;
+    if (value > 200) {
+      setErrorMsg("Max Value is reached.");
+      value = 200;
+    } else {
+      setErrorMsg("");
+    }
+    setWidth(value);
+  };
+  const openColorSelector = (i) => {
+    if (i === colorSelectorOpen) {
+      setColorSelectorOpen(0);
+    } else {
+      setColorSelectorOpen(i);
+    }
+  };
 
   return (
     <>
-      <div className="h-full flex flex-col  justify-center items-center mt-10">
-        <div className="flex lg:flex-row  justify-between w-5/6 h-5/6 rounded-3xl bg-white shadow-[0_5px_20px_rgba(10,10,10,0.3)]">
-          <div className="lg:w-2/3 h-full p-5 ">
-            <div className="w-full h-full flex flex-col  border border-[#9CA3AF] rounded-t-2xl">
-              <div className="grid grid-cols-5">
-                {socialMedia.map(({ title, url }, index) => {
+      <div className="h-full flex flex-col  justify-center items-center mt-5">
+        <div className="flex lg:flex-row md:flex-col  justify-between w-5/6 h-5/6 rounded-3xl bg-white shadow-[0_5px_20px_rgba(10,10,10,0.3)]">
+          <div className="lg:w-2/3 h-full p-5 md:pb-0 ">
+            <div className="w-full h-full flex flex-col  border-2 border-[#C2CED2] rounded-t-2xl">
+              <div className="grid xl:grid-cols-5 md:grid-cols-4">
+                {socialMedia.map(({ title, url, icon }, index) => {
                   return (
                     <Button
                       key={index}
@@ -111,6 +177,10 @@ const Container = () => {
                         setUrl(url);
                       }}
                       sx={{
+                        gap: "4px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                         pt: "8px",
                         borderBottom: "1px solid #9CA3AF",
                         borderRadius: "15px 15px 0px 0px",
@@ -129,6 +199,13 @@ const Container = () => {
                         },
                       }}
                     >
+                      {typeof icon === "string" ? (
+                        <img className="sm:w-[20px]" src={icon} alt={title} />
+                      ) : (
+                        React.createElement(icon, {
+                          sx: { fontSize: 20, color: "#374151" },
+                        })
+                      )}
                       {title}
                     </Button>
                   );
@@ -148,53 +225,131 @@ const Container = () => {
               </div>
             </div>
           </div>
-          <div className="w-1/3 my-10  border-l-2 border-l-[#C2CED2] flex flex-col  items-center ">
-            <p className="font-bold text-3xl mt-5 mb-1">QR CODE</p>
-            <div
-              className="relative mx-2 mb-2 flex justify-center p-2 min-h-[210px] w-[210px] "
-              ref={ref}
-            ></div>
-            <button
-              class="relative min-w-[150px] min-h-[40px] mb-2 cursor-pointer flex items-center border border-[#9CA3AF]  overflow-hidden transition-all duration-300 group "
-              onClick={handleDownload}
-            >
-              <span class="translate-x-[22px] text-[#374151] font-semibold transition-all duration-300 group-hover:text-transparent ">
-                Download
-              </span>
-              <span class="absolute translate-x-[109px] h-full w-[40px] bg-[#d7e2ff] flex items-center justify-center transition-all duration-300 group-hover:w-full group-hover:translate-x-0 group-active:bg-[#e2e2ff] ">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 35 35"
-                  class="w-[20px] fill-[#374151]"
-                >
-                  <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
-                  <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
-                  <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
-                </svg>
-              </span>
-            </button>
-
+          <div className="w-1/3 lg:my-10 md:my-0  border-l-2 border-l-[#C2CED2] flex lg:flex-col md:flex-row  items-center ">
+            <div className="flex justify-center flex-col">
+              <div ref={ref}></div>
+              <button
+                class="relative max-w-full min-h-[40px] mb-4 cursor-pointer flex items-center border border-[#9CA3AF]  overflow-hidden transition-all duration-300 group"
+                onClick={handleDownload}
+              >
+                <span class="translate-x-[50px] text-[#374151] font-semibold transition-all duration-300 group-hover:text-transparent text-center">
+                  Download
+                </span>
+                <span class="absolute translate-x-[158px] h-full w-[40px] bg-[#d7e2ff] flex items-center justify-center transition-all duration-300 group-hover:w-full group-hover:translate-x-0 group-active:bg-[#e2e2ff] ">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 35 35"
+                    class="w-[20px] fill-[#374151]"
+                  >
+                    <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
+                    <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
+                    <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
+                  </svg>
+                </span>
+              </button>
+            </div>
             <div className="flex flex-col w-full h-full mx-2">
               <div className="accordion-container">
-                <Accordion title={"FRAME"} handleClick={() => handleClick(0)} />
-                <div className="panel">FRAME PANEL</div>
+                <Accordion
+                  title={"MAIN OPTIONS"}
+                  handleClick={() => handleClick(1)}
+                  Selected={Selected === 1}
+                />
+                <div
+                  id="panel"
+                  className={Selected === 1 ? "h-[7.8rem] py-2" : "h-0"}
+                >
+                  <div className="flex flex-row mr-5">
+                    <TextField
+                      aria-hidden="true"
+                      type="number"
+                      sx={{
+                        mr: 2,
+                        mt: 1,
+                      }}
+                      id="outlined-basic"
+                      label="Height"
+                      variant="outlined"
+                      value={height}
+                      onChange={handleHeight}
+                    />
+
+                    <TextField
+                      type="number"
+                      sx={{
+                        mt: 1,
+                      }}
+                      aria-hidden="true"
+                      id="outlined-basic"
+                      label="Width"
+                      value={width}
+                      variant="outlined"
+                      onChange={handleWidth}
+                    />
+                  </div>
+                  <p className="text-xs m-0 text-red-600 text-center">
+                    {errorMsg}
+                  </p>
+
+                  <div className=" flex flex-col gap-2">
+                    <div className="color-btn-container my-2 ">
+                      <p>Background Color: </p>
+                      <button
+                        tabIndex="-1"
+                        className={`color-btn `}
+                        style={{ backgroundColor: customBgColor }}
+                        onClick={() => openColorSelector(1)}
+                      >
+                        <span className=" ">+</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className="accordion-container">
                 <Accordion
                   title={"SHAPE & COLOR"}
-                  handleClick={() => handleClick(1)}
+                  handleClick={() => handleClick(2)}
+                  Selected={Selected === 2}
                 />
-                <div className="panel">
-                  <ColorSelector
-                    pallet={picker_data}
-                    selectedColor={setCustomColor}
+                <div
+                  id="panel"
+                  className={Selected === 2 ? "h-30 py-2" : "h-0"}
+                >
+                  <SelectOptions
+                    aria-hidden="true"
+                    value={dotsStyle}
+                    title="Dots"
+                    options={[
+                      "Rounded",
+                      "Dots",
+                      "Classy",
+                      "Classy-Rounded",
+                      "Square",
+                      "Extra-Rounded",
+                    ]}
+                    handleSelect={handleSelect}
                   />
-                  <p>{customColor}</p>
+
+                  <div className=" flex flex-col gap-2 my-2">
+                    <div className="color-btn-container ">
+                      <p>Dots Color: </p>
+                      <button
+                        tabIndex="-1"
+                        className={`color-btn`}
+                        style={{ backgroundColor: customDotsColor }}
+                        onClick={() => openColorSelector(2)}
+                      >
+                        <span className=" ">+</span>
+                      </button>
+                    </div>
+                  </div>
+                  {colorSelectorOpen === 1 ? (
+                    <ColorSelectorModal setCustomColor={setCustomBgColor} />
+                  ) : colorSelectorOpen === 2 ? (
+                    <ColorSelectorModal setCustomColor={setCustomDotsColor} />
+                  ) : null}
                 </div>
-              </div>
-              <div className="accordion-container">
-                <Accordion title={"LOGO"} handleClick={() => handleClick(2)} />
-                <div className="panel">LOGO PANEL </div>
               </div>
             </div>
           </div>

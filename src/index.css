@@ -3,14 +3,34 @@ body {
   background-color: #f4f7ff;
 }
 * {
-  font-family: "Fira Code", "Source Code Pro", "Courier New", monospace;
+  font-family: "Inria Sans", "Inter", "Nunito", "Segoe UI", "Arial", sans-serif;
 }
 .btn {
-  @apply border-y text-start pl-5 font-semibold border-y-gray-400 py-1.5 transition-all hover:bg-gray-100 active:bg-gray-200 cursor-pointer flex flex-row justify-between items-center w-full h-[38px];
+  @apply border-y text-start pl-5 font-semibold border-y-gray-400 py-1.5 transition-all hover:bg-gray-100 active:bg-gray-200 cursor-pointer flex flex-row justify-between items-center w-full;
 }
-.panel {
-  @apply pl-5 py-1;
+#panel {
+  @apply pl-5 transition-all duration-300 bg-gradient-to-b from-[#f4f7ff] to-transparent;
 }
 .accordion-container {
-  @apply p-0 overflow-hidden h-[38px];
+  @apply p-0 overflow-hidden z-0;
+}
+
+.color-btn {
+  @apply relative border-black cursor-pointer border-2 h-10 w-10 ml-1 flex items-center justify-center rounded-full text-white;
+}
+.color-btn-container {
+  @apply h-full w-full flex flex-row items-center;
+}
+
+.color-btn span {
+  @apply top-[15%] absolute justify-center items-center rounded-full mix-blend-difference h-10 w-10;
+}
+
+.icon {
+  @apply hover:opacity-80 transition-all;
+}
+
+::selection {
+  background-color: #5d275d; 
+  color: white;
 }
