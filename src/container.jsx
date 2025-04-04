@@ -165,7 +165,7 @@ const Container = () => {
     <>
       <div className="h-full flex flex-col  justify-center items-center mt-5">
         <div className="flex lg:flex-row md:flex-col  justify-between w-5/6 h-5/6 rounded-3xl bg-white shadow-[0_5px_20px_rgba(10,10,10,0.3)]">
-          <div className="lg:w-2/3 h-full p-5 md:pb-0 ">
+          <div className="lg:w-2/3 h-full p-5 lg:pb-5 md:pb-0">
             <div className="w-full h-full flex flex-col  border-2 border-[#C2CED2] rounded-t-2xl">
               <div className="grid xl:grid-cols-5 md:grid-cols-4">
                 {socialMedia.map(({ title, url, icon }, index) => {
@@ -232,13 +232,13 @@ const Container = () => {
                 ref={ref}
               ></div>
               <button
-                class="relative max-w-full min-h-[40px] mb-4 cursor-pointer flex items-center border border-[#9CA3AF]  overflow-hidden transition-all duration-300 group"
+                class="relative mx-5 max-w-full min-h-[40px] mb-4 cursor-pointer flex items-center border border-[#9CA3AF]  overflow-hidden transition-all duration-300 group"
                 onClick={handleDownload}
               >
-                <span class="translate-x-[50px] text-[#374151] font-semibold transition-all duration-300 group-hover:text-transparent text-center">
+                <span class="translate-x-[40px] text-[#374151] font-semibold transition-all duration-300 group-hover:text-transparent text-center">
                   Download
                 </span>
-                <span class="absolute translate-x-[158px] h-full w-[40px] bg-[#d7e2ff] flex items-center justify-center transition-all duration-300 group-hover:w-full group-hover:translate-x-0 group-active:bg-[#e2e2ff] ">
+                <span class="absolute translate-x-[144px] h-full w-[40px] bg-[#d7e2ff] flex items-center justify-center transition-all duration-300 group-hover:w-full group-hover:translate-x-0 group-active:bg-[#e2e2ff] ">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 35 35"
