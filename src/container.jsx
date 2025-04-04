@@ -227,7 +227,10 @@ const Container = () => {
           </div>
           <div className="w-1/3 lg:my-10 md:my-0  border-l-2 border-l-[#C2CED2] flex lg:flex-col md:flex-row  items-center ">
             <div className="flex justify-center flex-col">
-              <div ref={ref}></div>
+              <div
+                className="relative mx-2 mb-2 flex justify-center p-2 min-h-[210px] w-[210px] "
+                ref={ref}
+              ></div>
               <button
                 class="relative max-w-full min-h-[40px] mb-4 cursor-pointer flex items-center border border-[#9CA3AF]  overflow-hidden transition-all duration-300 group"
                 onClick={handleDownload}
