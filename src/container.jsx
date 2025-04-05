@@ -261,6 +261,12 @@ const Container = () => {
                 </div>
                 {isScreenMd && (
                   <Button
+                    sx={{
+                      borderTop: "1px solid #99A1AF",
+                      color: "black",
+                      fontWeight: "bold",
+                      borderRadius: "0px",
+                    }}
                     onClick={() => setIsQrVisible(!isQrVisible)}
                     disabled={!url.trim()}
                   >
@@ -271,8 +277,8 @@ const Container = () => {
             </div>
           )}
           {((isScreenMd && isQrVisible) || !isScreenMd) && (
-            <div className="lg:w-1/3 lg:my-10 lg:flex lg:border-l-2 lg:border-l-[#C2CED2] lg:flex-col items-center ">
-              <div className="flex justify-center flex-col">
+            <div className="lg:w-1/3 lg:my-10 lg:flex lg:border-l-2 lg:border-l-[#C2CED2] lg:flex-col h-dvh  items-center ">
+              <div className="flex justify-center flex-col ">
                 <div
                   className="relative mx-2 mb-2 flex self-center justify-center p-2 min-h-[210px] w-[210px] "
                   ref={ref}
@@ -297,7 +303,7 @@ const Container = () => {
                   </span>
                 </button>
               </div>
-              <div className="flex flex-col w-full h-full lg:mx-2 xs">
+              <div className="flex flex-col w-full lg:mx-2 xs">
                 <div className="accordion-container">
                   <Accordion
                     title={"SIZE"}
