@@ -1,15 +1,22 @@
 @import "tailwindcss";
+
+@theme {
+  --breakpoint-xs: 360px;
+}
+
 body {
   background-color: #f4f7ff;
 }
+
 * {
   font-family: "Inria Sans", "Inter", "Nunito", "Segoe UI", "Arial", sans-serif;
 }
+
 .btn {
   @apply border-y text-start pl-5 font-semibold border-y-gray-400 py-1.5 transition-all hover:bg-gray-100 active:bg-gray-200 cursor-pointer flex flex-row justify-between items-center w-full;
 }
 #panel {
-  @apply pl-5 transition-all duration-300 bg-gradient-to-b from-[#f4f7ff] to-transparent;
+  @apply pl-5 transition-all duration-300 bg-gradient-to-b from-[rgb(249,251,255)] to-transparent;
 }
 .accordion-container {
   @apply p-0 overflow-hidden z-0;
@@ -31,6 +38,6 @@ body {
 }
 
 ::selection {
-  background-color: #5d275d; 
+  background-color: #5d275d;
   color: white;
 }

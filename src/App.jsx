@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <div className="w-full h-dvh flex justify-center">
-        <div className="w-5/6 h-full">
+        <div className="md:w-5/6 xs:w-full h-full">
           <Navbar />
           <Container />
         </div>
