@@ -277,7 +277,7 @@ const Container = () => {
             </div>
           )}
           {((isScreenMd && isQrVisible) || !isScreenMd) && (
-            <div className="lg:w-1/3 lg:my-10 lg:flex lg:border-l-2 lg:border-l-[#C2CED2] lg:flex-col h-full  items-center ">
+            <div className="lg:w-1/3 lg:my-10 lg:flex lg:border-l-2 lg:border-l-[#C2CED2] lg:flex-col   items-center ">
               <div className="flex justify-center flex-col ">
                 <div
                   className="relative mx-2 mb-2 flex self-center justify-center p-2 min-h-[210px] w-[210px] "
@@ -393,7 +393,7 @@ const Container = () => {
                         </button>
                       </div>
                     </div>
-                    <div className=" flex flex-col gap-2">
+                    <div className="flex flex-col gap-2">
                       <div className="color-btn-container my-2 ">
                         <p>Background Color: </p>
                         <button
